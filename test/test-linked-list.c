@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <setjmp.h>
 #include <cmocka.h>
-#include "linked-list.h"
+#include "../src/linked-list.h"
 
 /// Fixtures ///
 

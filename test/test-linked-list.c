@@ -11,17 +11,17 @@
 
 static LList* fixture_int_list() {
     LList* head = NULL;
-    head = llist_push((void*) 3, head);
-    head = llist_push((void*) 2, head);
-    head = llist_push((void*) 1, head);
+    head = llist_push(head, (void*) 3);
+    head = llist_push(head, (void*) 2);
+    head = llist_push(head, (void*) 1);
     return head;
 }
 
 static LList* fixture_string_list() {
     LList* head = NULL;
-    head = llist_push("last", head);
-    head = llist_push("next", head);
-    head = llist_push("first", head);
+    head = llist_push(head, "last");
+    head = llist_push(head, "next");
+    head = llist_push(head, "first");
     return head;
 }
 
@@ -99,7 +99,7 @@ static void pop_llist(void **state) {
 static void get_size(void **state) {
     LList* head = llist_node(NULL);
     assert_int_equal(llist_size(head), 1);
-    head = llist_push((void*) 1, head);
+    head = llist_push(head, (void*) 1);
     assert_int_equal(llist_size(head), 2);
 
     llist_free(head);

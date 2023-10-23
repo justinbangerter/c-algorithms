@@ -22,7 +22,7 @@ void* llist_pop(LList* head) {
     return val;
 }
 
-LList* llist_push(void* val, LList* next) {
+LList* llist_push(LList* next, void* val) {
     LList* head = llist_node(val);
     head->next = next;
     return head;

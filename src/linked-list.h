@@ -24,11 +24,11 @@ void* llist_pop(LList* head);
 
 /**
  * Push a new node with the given value onto the front of this list.
- * @param void* val the value to push
  * @param LList* tail push to this list
+ * @param void* val the value to push
  * @return the new list head
  */
-LList* llist_push(void* val, LList* tail);
+LList* llist_push(LList* tail, void* val);
 
 /**
  * Insert the given value after this node.

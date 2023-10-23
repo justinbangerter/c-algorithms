@@ -1,25 +1,43 @@
 #include <stdlib.h>
 #include "linked-list.h"
 
-LList* llist_create_list() {
-    return malloc(sizeof(LList));
+LList* llist_node(void* val) {
+    LList* head = malloc(sizeof(LList));
+    head->val = val;
+    return head;
 }
 
-LList* llist_pop(LList* head) {
-    LList* next = head->next;
+LList* llist_get(LList* head, int index) {
+    LList* node = head;
+    while(index-- > 0) {
+        node = node->next;
+    }
+    return node;
+}
+
+void* llist_pop(LList* head) {
+    void* val = head->val;
     head->next = NULL;
-    return next;
+    llist_free(head);
+    return val;
 }
 
 LList* llist_push(void* val, LList* next) {
-    LList* LList = malloc(sizeof(LList));
-    LList->val = val;
-    LList->next = next;
-    return LList;
+    LList* head = llist_node(val);
+    head->next = next;
+    return head;
+}
+
+LList* llist_insert_after(LList* head, void* val) {
+    LList* inserted = llist_node(val);
+    inserted->next = head->next;
+    head->next = inserted;
+
+    return inserted;
 }
 
 int llist_size(LList* head) {
-    int size = -1;
+    int size = 0;
     while(head != NULL) {
         size++;
         head = head->next;
@@ -30,9 +48,8 @@ int llist_size(LList* head) {
 void llist_free(LList* head) {
     while (head != NULL) {
         LList* next = head->next;
-        // values should always come from stack variables
-        //free(head->val);
         free(head);
         head = next;
     }
 }
+

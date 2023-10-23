@@ -1,13 +1,12 @@
-struct NodeType {
+struct LListType {
     void* val;
-    struct NodeType* tail;
+    struct LListType* next;
 };
+typedef struct LListType LList;
 
-typedef struct NodeType Node;
+LList* llist_create_list();
+LList* llist_pop(LList* head);
+LList* llist_push(void* val, LList* next);
+int llist_size(LList* head);
 
-Node* EmptyList();
-Node* Pop(Node* head);
-Node* Push(void* val, Node* tail);
-int SizeOf(Node* head);
-
-void FreeList(Node* head);
+void llist_free(LList* head);

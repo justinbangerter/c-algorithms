@@ -46,9 +46,26 @@ LList* llist_insert_after(LList* head, void* val);
 int llist_size(LList* head);
 
 /**
+ * Split a list just after the given index.
+ * ex: llist_split(head, 1) splits the list after the second element and
+ *    returns the head of the new list (the element that was at index 2).
+ */
+LList* llist_split_after(LList* head, int index);
+
+/**
  * Free all of the memory used by this list.
  * If the list elements have allocated memory, they should be freed first.
  *
  * @param LList* head the list to free
  */
 void llist_free(LList* head);
+
+/**
+ * Sort a linked list. Uses merge sort.
+ * Alters the provided list.
+ * The head of the given list is nort guaranteed to be the head
+ * of the sorted list.
+ * @param LList* head the head of the list to sort
+ * @param int (*cmp)(const void *, const void *) comparator function
+ */
+LList* llist_sort(LList* head, int (*cmp)(const void *, const void *));

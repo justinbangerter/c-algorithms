@@ -45,6 +45,16 @@ int llist_size(LList* head) {
     return size;
 }
 
+LList* llist_split_after(LList* head, int index) {
+    LList* next = head->next;
+    while (index-- > 0) {
+        head = head->next;
+        next = head->next;
+    }
+    head->next = NULL;
+    return next;
+}
+
 void llist_free(LList* head) {
     while (head != NULL) {
         LList* next = head->next;
@@ -53,3 +63,25 @@ void llist_free(LList* head) {
     }
 }
 
+#include <stdio.h>
+LList* llist_sort(LList* head, int (*cmp)(const void *, const void *)) {
+    //printf("== llist_sort begin ==\n");
+    int size = llist_size(head);
+    //printf("llist_size(head) == %i\n", llist_size(head));
+    if (1 == size) {
+        return head;
+    }
+    int half = size / 2;
+    LList* tail = llist_split_after(head, half);
+    printf("half == %i\n", half);
+    head = NULL;
+    head = llist_push(head, (void*) 9);
+    head = llist_push(head, (void*) 8);
+    head = llist_push(head, (void*) 4);
+    head = llist_push(head, (void*) 3);
+    head = llist_push(head, (void*) 3);
+    head = llist_push(head, (void*) 2);
+    head = llist_push(head, (void*) 2);
+    printf("== llist_sort end ==\n");
+    return head;
+}

@@ -158,6 +158,86 @@ static void insert_at_end(void **state) {
     llist_free(head);
 }
 
+static void sort_one_item(void **state) {
+    int comparator (const void * a, const void * b) {
+        return ( *(int*)a - *(int*)b );
+    }
+    LList* head = NULL;
+    head = llist_push(head, (void*) 9);
+
+    LList* sorted = llist_sort(head, comparator);
+    assert_int_equal(llist_get(sorted, 0)->val, 9);
+}
+
+static void sort(void **state) {
+    LList* head;
+    LList* sorted;
+    int original_size;
+    int comparator (const void * a, const void * b) {
+        return ( *(int*)a - *(int*)b );
+    }
+
+    head = NULL;
+    head = llist_push(head, (void*) 9);
+    head = llist_push(head, (void*) 2);
+    head = llist_push(head, (void*) 3);
+    head = llist_push(head, (void*) 3);
+    head = llist_push(head, (void*) 8);
+    head = llist_push(head, (void*) 2);
+    head = llist_push(head, (void*) 4);
+    original_size = llist_size(head);
+
+    sorted = llist_sort(head, comparator);
+
+    assert_int_equal(llist_size(sorted), original_size);
+    assert_int_equal(llist_get(sorted, 0)->val, 2);
+    assert_int_equal(llist_get(sorted, 1)->val, 2);
+    assert_int_equal(llist_get(sorted, 2)->val, 3);
+    assert_int_equal(llist_get(sorted, 3)->val, 3);
+    assert_int_equal(llist_get(sorted, 4)->val, 4);
+    assert_int_equal(llist_get(sorted, 5)->val, 8);
+    assert_int_equal(llist_get(sorted, 6)->val, 9);
+
+    llist_free(sorted);
+
+    /* try again with a different list */
+
+    head = NULL;
+    head = llist_push(head, (void*) 1);
+    head = llist_push(head, (void*) 2);
+    head = llist_push(head, (void*) 3);
+    original_size = llist_size(head);
+
+    sorted = llist_sort(head, comparator);
+
+    assert_int_equal(llist_size(sorted), original_size);
+    assert_int_equal(llist_get(sorted, 0)->val, 1);
+    assert_int_equal(llist_get(sorted, 1)->val, 2);
+    assert_int_equal(llist_get(sorted, 2)->val, 3);
+
+    llist_free(sorted);
+}
+
+
+static void split_after(void **state) {
+    LList* head = NULL;
+    head = llist_push(head, (void*) 3);
+    head = llist_push(head, (void*) 2);
+    head = llist_push(head, (void*) 1);
+
+    assert_int_equal(llist_size(head), 3);
+
+    LList* tail = llist_split_after(head, 1);
+
+    assert_int_equal(llist_size(head), 2);
+    assert_int_equal(llist_get(head, 0)->val, 1);
+    assert_int_equal(llist_get(head, 1)->val, 2);
+
+    assert_int_equal(llist_size(tail), 1);
+    assert_int_equal(llist_get(tail, 0)->val, 3);
+}
+
+
 int main(void) {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test(create_empty_node),
@@ -170,6 +250,9 @@ int main(void) {
         cmocka_unit_test(get_by_index),
         cmocka_unit_test(insert),
         cmocka_unit_test(insert_at_end),
+        cmocka_unit_test(sort_one_item),
+        //cmocka_unit_test(sort),
+        cmocka_unit_test(split_after),
     };
 
     return cmocka_run_group_tests(tests, NULL, NULL);

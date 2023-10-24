@@ -64,6 +64,7 @@ void llist_free(LList* head) {
 }
 
 LList* llist_sort(LList* head, int (*cmp)(const void*, const void*)) {
+    /* merge sort */
     int size = llist_size(head);
     if (1 == size) {
         return head;

@@ -54,16 +54,16 @@ LList* llist_split_after(LList* head, int index);
 
 /**
  * Free all of the memory used by this list.
- * If the list elements have allocated memory, they should be freed first.
+ * If the list elements use allocated memory, you must free them yourself.
  *
  * @param LList* head the list to free
  */
 void llist_free(LList* head);
 
 /**
- * Sort a linked list. Uses merge sort.
+ * Sort a linked list.
  * Alters the provided list.
- * The head of the given list is nort guaranteed to be the head
+ * The head of the given list is not guaranteed to be the head
  * of the sorted list.
  * @param LList* head the head of the list to sort
  * @param int (*cmp)(const void *, const void *) comparator function

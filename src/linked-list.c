@@ -63,25 +63,49 @@ void llist_free(LList* head) {
     }
 }
 
-#include <stdio.h>
-LList* llist_sort(LList* head, int (*cmp)(const void *, const void *)) {
-    //printf("== llist_sort begin ==\n");
+LList* llist_sort(LList* head, int (*cmp)(const void*, const void*)) {
     int size = llist_size(head);
-    //printf("llist_size(head) == %i\n", llist_size(head));
     if (1 == size) {
         return head;
     }
+
+    /* split array */
     int half = size / 2;
-    LList* tail = llist_split_after(head, half);
-    printf("half == %i\n", half);
-    head = NULL;
-    head = llist_push(head, (void*) 9);
-    head = llist_push(head, (void*) 8);
-    head = llist_push(head, (void*) 4);
-    head = llist_push(head, (void*) 3);
-    head = llist_push(head, (void*) 3);
-    head = llist_push(head, (void*) 2);
-    head = llist_push(head, (void*) 2);
-    printf("== llist_sort end ==\n");
+    LList* tail = llist_split_after(head, half - 1);
+
+    /* sort both arrays */
+    head = llist_sort(head, cmp);
+    tail = llist_sort(tail, cmp);
+
+    /* create a dummy node to pop off at the end */
+    LList* new_head = llist_node(NULL);
+    LList* new_end = new_head; /* where to append new nodes */
+
+    while (head != NULL || tail != NULL) {
+        if (head == NULL) {
+            new_end->next = tail;
+            tail = tail->next;
+        }
+        else if (tail == NULL) {
+            new_end->next = head;
+            head = head->next;
+        }
+        else {
+            if (cmp((void*) &head->val, (void*) &tail->val) < 0) {
+                /* head is less than tail */
+                new_end->next = head;
+                head = head->next;
+            }
+            else {
+                new_end->next = tail;
+                tail = tail->next;
+            }
+            new_end = new_end->next;
+            new_end->next = NULL;
+        }
+    }
+
+    head = new_head->next;
+    llist_pop(new_head); /* free the dummy node */
     return head;
 }

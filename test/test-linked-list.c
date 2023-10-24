@@ -159,14 +159,29 @@ static void insert_at_end(void **state) {
 }
 
 static void sort_one_item(void **state) {
-    int comparator (const void * a, const void * b) {
-        return ( *(int*)a - *(int*)b );
-    }
     LList* head = NULL;
     head = llist_push(head, (void*) 9);
 
-    LList* sorted = llist_sort(head, comparator);
+    LList* sorted = llist_sort(head, NULL);
     assert_int_equal(llist_get(sorted, 0)->val, 9);
+    assert_int_equal(llist_size(sorted), 1);
+}
+
+int compare_ints (const void * a, const void * b) {
+    return ( *(int*)a - *(int*)b );
+}
+
+static void sort_two_items(void **state) {
+    LList* head = NULL;
+    head = llist_push(head, (void*) 1);
+    head = llist_push(head, (void*) 3);
+
+    int (*cmp) (const void*, const void*);
+    cmp = &compare_ints;
+    LList* sorted = llist_sort(head, cmp);
+    assert_int_equal(llist_get(sorted, 0)->val, 1);
+    assert_int_equal(llist_get(sorted, 1)->val, 3);
+    assert_int_equal(llist_size(sorted), 2);
 }
 
 static void sort(void **state) {
@@ -251,6 +266,7 @@ int main(void) {
         cmocka_unit_test(insert),
         cmocka_unit_test(insert_at_end),
         cmocka_unit_test(sort_one_item),
+        cmocka_unit_test(sort_two_items),
         //cmocka_unit_test(sort),
         cmocka_unit_test(split_after),
     };

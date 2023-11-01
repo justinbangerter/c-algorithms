@@ -110,3 +110,31 @@ LList* llist_sort(LList* head, int (*cmp)(const void*, const void*)) {
     llist_pop(new_head); /* free the dummy node */
     return head;
 }
+
+int llist_bfind_index(LList* head, void* val, int (*cmp)(const void *, const void *)) {
+    /*
+     * The key to keeping the binary search algorithm simple is to
+     * modify the bounds and calculate the index from the bounds.
+     */
+    int lower_bound = 0;
+    int upper_bound = llist_size(head) - 1;
+    while (1) {
+        if (upper_bound < lower_bound) {
+            return -1;
+        }
+
+        int index = (upper_bound + lower_bound) / 2;
+        LList* node = llist_get(head, index);
+
+        if (node->val == val) {
+            return index;
+        }
+
+        if (cmp((void*) &node->val, &val) > 0) {
+            upper_bound = index - 1;
+        }
+        else {
+            lower_bound = index + 1;
+        }
+    }
+}

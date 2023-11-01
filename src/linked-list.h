@@ -69,3 +69,13 @@ void llist_free(LList* head);
  * @param int (*cmp)(const void *, const void *) comparator function
  */
 LList* llist_sort(LList* head, int (*cmp)(const void *, const void *));
+
+/**
+ * Use binary search to find the index of a value in a sorted list.
+ * @param LList* head the head of the sorted list
+ * @param void* val
+ * @param int (*cmp)(const void *, const void *) return positive int
+ *  if first arg is greater than second arg, else return negative
+ * @return the index of the found value or -1 if not found
+ */
+int llist_bfind_index(LList* head, void* val, int (*cmp)(const void *, const void *));

@@ -167,7 +167,7 @@ static void sort_one_item(void **state) {
     assert_int_equal(llist_size(sorted), 1);
 }
 
-int compare_ints (const void * a, const void * b) {
+static int compare_ints (const void * a, const void * b) {
     return ( *(int*)a - *(int*)b );
 }
 
@@ -247,6 +247,63 @@ static void split_after(void **state) {
     assert_int_equal(llist_get(tail, 0)->val, 3);
 }
 
+static void binary_search_empty(void **state) {
+    LList* head = NULL;
+    assert_int_equal(-1, llist_bfind_index(head, (void*) 1, &compare_ints));
+}
+
+static void binary_search_one_miss(void **state) {
+    LList* head = NULL;
+    head = llist_push(head, (void*) 1);
+    assert_int_equal(-1, llist_bfind_index(head, (void*) 8, &compare_ints));
+}
+
+static void binary_search_one_match(void **state) {
+    LList* head = NULL;
+    head = llist_push(head, (void*) 1);
+    assert_int_equal(0, llist_bfind_index(head, (void*) 1, &compare_ints));
+}
+
+static void binary_search_two_miss(void **state) {
+    LList* head = NULL;
+    head = llist_push(head, (void*) 1);
+    head = llist_push(head, (void*) 2);
+    assert_int_equal(-1, llist_bfind_index(head, (void*) 10, &compare_ints));
+}
+
+static void binary_search_two_match(void **state) {
+    LList* head = NULL;
+    head = llist_push(head, (void*) 1);
+    head = llist_push(head, (void*) 2);
+    head = llist_sort(head, &compare_ints);
+    assert_int_equal(0, llist_bfind_index(head, (void*) 1, &compare_ints));
+    assert_int_equal(1, llist_bfind_index(head, (void*) 2, &compare_ints));
+}
+
+static void binary_search_more(void **state) {
+    LList* head = NULL;
+    head = llist_push(head, (void*) 1);
+    head = llist_push(head, (void*) 8);
+    head = llist_push(head, (void*) 3);
+    head = llist_sort(head, &compare_ints);
+
+    assert_int_equal(-1, llist_bfind_index(head, (void*) 5, &compare_ints));
+    assert_int_equal(0, llist_bfind_index(head, (void*) 1, &compare_ints));
+    assert_int_equal(1, llist_bfind_index(head, (void*) 3, &compare_ints));
+    assert_int_equal(2, llist_bfind_index(head, (void*) 8, &compare_ints));
+
+    head = llist_push(head, (void*) 15);
+    head = llist_sort(head, &compare_ints);
+    //printf("%i\n", llist_get(head, 0)->val);
+
+    assert_int_equal(-1, llist_bfind_index(head, (void*) 100, &compare_ints));
+    assert_int_equal(0, llist_bfind_index(head, (void*) 1, &compare_ints));
+    assert_int_equal(1, llist_bfind_index(head, (void*) 3, &compare_ints));
+    assert_int_equal(2, llist_bfind_index(head, (void*) 8, &compare_ints));
+    assert_int_equal(3, llist_bfind_index(head, (void*) 15, &compare_ints));
+}
+
+
 
 int main(void) {
     const struct CMUnitTest tests[] = {
@@ -264,6 +321,12 @@ int main(void) {
         cmocka_unit_test(sort_two_items),
         cmocka_unit_test(sort_many_items),
         cmocka_unit_test(split_after),
+        cmocka_unit_test(binary_search_empty),
+        cmocka_unit_test(binary_search_one_miss),
+        cmocka_unit_test(binary_search_one_match),
+        cmocka_unit_test(binary_search_two_miss),
+        cmocka_unit_test(binary_search_two_match),
+        cmocka_unit_test(binary_search_more),
     };
 
     return cmocka_run_group_tests(tests, NULL, NULL);

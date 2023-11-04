@@ -331,33 +331,28 @@ static void search_more(void **state) {
     assert_int_equal(5, llist_find_index(head, (void*) 8));
 }
 
-
-int main(void) {
-    const struct CMUnitTest tests[] = {
-        cmocka_unit_test(create_empty_node),
-        cmocka_unit_test(create_node),
-        cmocka_unit_test(create_string_lists),
-        cmocka_unit_test(create_int_lists),
-        cmocka_unit_test(access_value_out_of_stack),
-        cmocka_unit_test(pop_llist),
-        cmocka_unit_test(get_size),
-        cmocka_unit_test(get_by_index),
-        cmocka_unit_test(insert),
-        cmocka_unit_test(insert_at_end),
-        cmocka_unit_test(sort_one_item),
-        cmocka_unit_test(sort_two_items),
-        cmocka_unit_test(sort_many_items),
-        cmocka_unit_test(split_after),
-        cmocka_unit_test(binary_search_empty),
-        cmocka_unit_test(binary_search_one_miss),
-        cmocka_unit_test(binary_search_one_match),
-        cmocka_unit_test(binary_search_two_miss),
-        cmocka_unit_test(binary_search_two_match),
-        cmocka_unit_test(binary_search_more),
-        cmocka_unit_test(search_empty),
-        cmocka_unit_test(search_one),
-        cmocka_unit_test(search_more),
-    };
-
-    return cmocka_run_group_tests(tests, NULL, NULL);
-}
+const struct CMUnitTest llist_tests[] = {
+    cmocka_unit_test(create_empty_node),
+    cmocka_unit_test(create_node),
+    cmocka_unit_test(create_string_lists),
+    cmocka_unit_test(create_int_lists),
+    cmocka_unit_test(access_value_out_of_stack),
+    cmocka_unit_test(pop_llist),
+    cmocka_unit_test(get_size),
+    cmocka_unit_test(get_by_index),
+    cmocka_unit_test(insert),
+    cmocka_unit_test(insert_at_end),
+    cmocka_unit_test(sort_one_item),
+    cmocka_unit_test(sort_two_items),
+    cmocka_unit_test(sort_many_items),
+    cmocka_unit_test(split_after),
+    cmocka_unit_test(binary_search_empty),
+    cmocka_unit_test(binary_search_one_miss),
+    cmocka_unit_test(binary_search_one_match),
+    cmocka_unit_test(binary_search_two_miss),
+    cmocka_unit_test(binary_search_two_match),
+    cmocka_unit_test(binary_search_more),
+    cmocka_unit_test(search_empty),
+    cmocka_unit_test(search_one),
+    cmocka_unit_test(search_more),
+};

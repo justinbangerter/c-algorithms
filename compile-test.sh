@@ -1,3 +1,3 @@
 #!/bin/sh -e
-gcc src/*.c test/*.c -o build/test -lcmocka -I. -z noexecstack
+gcc src/*.c test/test-all.c -o build/test -lcmocka -I. -z noexecstack
 ./build/test

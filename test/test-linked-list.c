@@ -303,6 +303,33 @@ static void binary_search_more(void **state) {
     assert_int_equal(3, llist_bfind_index(head, (void*) 15, &compare_ints));
 }
 
+static void search_empty(void **state) {
+    LList* head = NULL;
+    assert_int_equal(-1, llist_find_index(head, (void*) 100));
+}
+
+static void search_one(void **state) {
+    LList* head = NULL;
+    head = llist_push(head, (void*) 1);
+    assert_int_equal(-1, llist_find_index(head, (void*) 100));
+    assert_int_equal(0, llist_find_index(head, (void*) 1));
+}
+
+
+static void search_more(void **state) {
+    LList* head = NULL;
+    head = llist_push(head, (void*) 8);
+    head = llist_push(head, (void*) 5);
+    head = llist_push(head, (void*) 3);
+    head = llist_push(head, (void*) 2);
+    head = llist_push(head, (void*) 1);
+    head = llist_push(head, (void*) 1);
+    assert_int_equal(-1, llist_find_index(head, (void*) 100));
+    assert_int_equal(0, llist_find_index(head, (void*) 1));
+    assert_int_equal(2, llist_find_index(head, (void*) 2));
+    assert_int_equal(4, llist_find_index(head, (void*) 5));
+    assert_int_equal(5, llist_find_index(head, (void*) 8));
+}
 
 
 int main(void) {
@@ -327,6 +354,9 @@ int main(void) {
         cmocka_unit_test(binary_search_two_miss),
         cmocka_unit_test(binary_search_two_match),
         cmocka_unit_test(binary_search_more),
+        cmocka_unit_test(search_empty),
+        cmocka_unit_test(search_one),
+        cmocka_unit_test(search_more),
     };
 
     return cmocka_run_group_tests(tests, NULL, NULL);

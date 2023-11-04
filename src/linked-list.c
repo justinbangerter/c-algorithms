@@ -138,3 +138,15 @@ int llist_bfind_index(LList* head, void* val, int (*cmp)(const void *, const voi
         }
     }
 }
+
+int llist_find_index(LList* head, void* val) {
+    int index = 0;
+    while (head != NULL) {
+        if (head->val == val) {
+            return index;
+        }
+        head = head->next;
+        index++;
+    }
+    return -1;
+}
